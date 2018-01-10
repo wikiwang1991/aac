@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 2.6)
 
-project(libFraunhoferAAC)
+project(fdk-aac)
 
-file(GLOB srcs
+file(GLOB SOURCES
 	libAACdec/src/*.cpp
 	libAACenc/src/*.cpp
 	libPCMutils/src/*.cpp
@@ -14,18 +14,46 @@ file(GLOB srcs
 	libSBRenc/src/*.cpp
 )
 
-add_library(libFraunhoferAAC
-	${srcs}
+file(GLOB PUBLIC_HEADERS
+  libAACdec/include/*.h
+	libAACenc/include/*.h
+  libSYS/include/*.h
 )
 
-target_include_directories(libFraunhoferAAC PUBLIC
+file(GLOB PRIVATE_HEADERS
+  libPCMutils/include/*.h
+	libFDK/include/*.h
+	libMpegTPDec/include/*.h
+	libMpegTPEnc/include/*.h
+	libSBRdec/include/*.h
+	libSBRenc/include/*.h
+)
+
+add_library(fdk-aac
+	${SOURCES} ${PUBLIC_HEADERS} ${PRIVATE_HEADERS}
+)
+
+if (MSVC)
+  add_definitions(-D__linux__)
+endif ()
+
+target_include_directories(fdk-aac
+PUBLIC
 	libAACdec/include
 	libAACenc/include
+	libSYS/include
+PRIVATE
 	libPCMutils/include
 	libFDK/include
-	libSYS/include
 	libMpegTPDec/include
 	libMpegTPEnc/include
 	libSBRdec/include
 	libSBRenc/include
+)
+
+set_target_properties(fdk-aac PROPERTIES PUBLIC_HEADER "${PUBLIC_HEADERS}")
+
+install(TARGETS fdk-aac
+  ARCHIVE DESTINATION lib
+  PUBLIC_HEADER DESTINATION include/fdk-aac
 )
