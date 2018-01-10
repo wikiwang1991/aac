@@ -29,7 +29,3 @@ target_include_directories(libFraunhoferAAC PUBLIC
 	libSBRdec/include
 	libSBRenc/include
 )
-
-if (MSVC)
-  add_definitions(-D__linux__)
-endif ()

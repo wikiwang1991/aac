@@ -160,8 +160,13 @@ amm-info@iis.fraunhofer.de
   #define LONG INT
   #define ULONG UINT
 #else /* __LP64__ */
+#ifdef _M_X64
+  typedef signed long long LONG;
+  typedef unsigned long long ULONG;
+#else
   typedef signed long LONG;
   typedef unsigned long ULONG;
+#endif
 #endif	/* __LP64__ */
   typedef signed short SHORT;
   typedef unsigned short USHORT;
